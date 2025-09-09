@@ -18,6 +18,9 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
+
+  tags = { "vm" = "drift" }
+
   depends_on = [ azurerm_network_interface.nic ]
 }
 
@@ -29,5 +32,14 @@ resource "azurerm_network_interface" "nic" {
     name = "nic-config"
     subnet_id = var.public_subnet_id_1
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.vm_publicIP.id
   }
+  depends_on = [ azurerm_public_ip.vm_publicIP ]
+}
+
+resource "azurerm_public_ip" "vm_publicIP" {
+  name = "${var.env}-vm1-PublicIP"
+  resource_group_name = var.rg_name
+  location = var.location
+  allocation_method = "Static"
 }
