@@ -18,14 +18,15 @@ module "vnet" {
   depends_on = [ module.rg ]
 }
 
-module "vm" {
-  source = "../../modules/vm"
-  env = var.env
-  location = var.rg_location
-  rg_name = var.rg_name
-  public_subnet_id_1 = module.vnet.public_subnet_1
-  depends_on = [ module.vnet ]
-}
+# module "vm" {
+#   source = "../../modules/vm"
+#   env = var.env
+#   location = var.rg_location
+#   rg_name = var.rg_name
+#   private_subnet_id_1 = module.vnet.private_subnet1
+#   public_subnet_id_1 = module.vnet.public_subnet_1
+#   depends_on = [ module.vnet ]
+# }
 
 # module "bastion" {
 #   source = "../../modules/bastion"
@@ -34,3 +35,12 @@ module "vm" {
 #   vnet_name = module.vnet.vnet_name
 #   depends_on = [ module.rg ,module.vnet ]
 # }
+
+module "vmss" {
+  source = "../../modules/azure-vmss"
+  env = var.env
+  location = var.location
+  rg_name = var.rg_name
+  private_subnet_id_2 = module.vnet.private_subnet2
+  depends_on = [ module.vnet ]
+}

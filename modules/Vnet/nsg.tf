@@ -15,29 +15,66 @@ resource "azurerm_network_security_group" "web_nsg" {
     destination_address_prefix = "*"
   }
 
-    security_rule {
-    name = "AllowRDP"
+  security_rule {
+    name = "Allow-HTTP"
     priority = 110
     direction = "Inbound"
     access = "Allow"
     protocol = "Tcp"
     source_port_range = "*"
-    destination_port_range = "3389"
+    destination_port_range = "80"
     source_address_prefix = "*"
     destination_address_prefix = "*"
   }
 
-    security_rule {
-    name = "DenyAllInBound"
-    priority = 200
+  security_rule {
+    name = "Allow-LB-Probe"
+    priority = 120
     direction = "Inbound"
-    access = "Deny"
-    protocol = "*"
+    access = "Allow"
+    protocol = "Tcp"
     source_port_range = "*"
-    destination_port_range = "*"
-    source_address_prefix = "*"
+    destination_port_range = "80"
+    source_address_prefix = "AzureLoadBalancer"
     destination_address_prefix = "*"
   }
+
+   security_rule {
+    name = "Allow-Internet-OutBound"
+    priority = 130
+    direction = "Inbound"
+    access = "Allow"
+    protocol = "*"
+    source_port_range = "*"
+    destination_port_range = "80"
+    source_address_prefix = "*"
+    destination_address_prefix = "Internet"
+  }
+
+  #   security_rule {
+  #   name = "AllowRDP"
+  #   priority = 110
+  #   direction = "Inbound"
+  #   access = "Allow"
+  #   protocol = "Tcp"
+  #   source_port_range = "*"
+  #   destination_port_range = "3389"
+  #   source_address_prefix = "*"
+  #   destination_address_prefix = "*"
+  # }
+
+  #   security_rule {
+  #   name = "DenyAllInBound"
+  #   priority = 200
+  #   direction = "Inbound"
+  #   access = "Deny"
+  #   protocol = "*"
+  #   source_port_range = "*"
+  #   destination_port_range = "*"
+  #   source_address_prefix = "*"
+  #   destination_address_prefix = "*"
+  # }
+
   # security_rule {
   #   name = "DenyInternetOutBound"
   #   priority = 210
@@ -48,6 +85,18 @@ resource "azurerm_network_security_group" "web_nsg" {
   #   destination_port_range = "*"
   #   source_address_prefix = "*"
   #   destination_address_prefix = "Internet"
+  # }
+
+  # security_rule {
+  #   name = "AllowICMP"
+  #   priority = 101
+  #   direction = "Inbound"
+  #   access = "Allow"
+  #   protocol = "Icmp"
+  #   source_port_range = "*"
+  #   destination_port_range = "*"
+  #   source_address_prefix = "*"
+  #   destination_address_prefix = "*"
   # }
 }
 

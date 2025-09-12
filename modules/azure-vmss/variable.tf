@@ -10,10 +10,6 @@ variable "location" {
   type = string
 }
 
-variable "private_subnet_id_1" {
-  type = string
-}
-
-variable "public_subnet_id_1" {
+variable "private_subnet_id_2" {
   type = string
 }
